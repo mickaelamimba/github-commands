@@ -3,6 +3,8 @@ export class CopyCode extends HTMLElement{
     desciption: string;
     codeText: string;
     shadow: ShadowRoot | null;
+    usage: string;
+
     
     constructor(){
             super();
@@ -10,6 +12,9 @@ export class CopyCode extends HTMLElement{
             this.shadow = shadow;
             const codeText = this.getAttribute('command');
             const commandDesciption = this.getAttribute('description');
+            const usage = this.getAttribute('usage');
+            //@ts-ignore
+            this.usage = usage;
             //@ts-ignore
             this.desciption = commandDesciption;
             //@ts-ignore
@@ -56,7 +61,7 @@ export class CopyCode extends HTMLElement{
             });
     //@ts-ignore
             this.shadow.querySelector('.show-description').addEventListener('click', () => {
-                this.dialogBoxDescription(this.desciption);
+                this.dialogBoxDescription();
             });
         }
         addStyles() {
@@ -176,17 +181,58 @@ export class CopyCode extends HTMLElement{
                 top: 0;
                 right: 0;
                 border: none;
-                background: transparent;
+                background: #e74c3c;
                 color: #fff;
                 cursor: pointer;
                 padding: 0.5rem;
                 font-size: 1rem;
                 font-weight: bold;
                 outline: none;
+                width: 1.5rem;
+                height: 1.5rem;
+                border-radius: 50%;
+                display: flex;
+                justify-content: center;
+                align-items: center;
+
             }
+            .dialog-close-button:focus{
+                outline: none;
+            }
+    
+
             .dialog-close-button:hover{
                 color: #ccc;
+                background: #c0392b;
             }
+            .dialog-header-section{
+                display: flex;
+                justify-content: space-between;
+                align-items: center;
+                position: relative;
+                background: #000;
+                color: #fff;
+
+            }
+            .dialog-header ,.dialog-usage{
+                margin: 0;
+                padding: 0;
+                font-size: 1rem;
+                font-weight: bold;
+            }
+            .dialog-body{
+                margin-top: 1rem;
+            }
+            .dialog-paragraph, .dialog-paragraph-usage{
+                margin: 0;
+                padding: 0;
+                font-size: 0.8rem;
+                font-weight: normal;
+            }
+    
+          
+
+
             `
 
             this.shadow?.appendChild(style);
@@ -203,9 +249,29 @@ export class CopyCode extends HTMLElement{
             });
 
         }
-        dialogBoxDescription(description: string) {
-            console.log(description);
+        dialogBoxDescription() {
+            const dialogHeaderSection = document.createElement('div');
+            dialogHeaderSection.classList.add('dialog-header-section');
+            const dialoHeader = document.createElement('h2');
+            dialoHeader.textContent = 'Description';
+            dialoHeader.classList.add('dialog-header');
+
+            const dialogBody = document.createElement('div');
+            dialogBody.classList.add('dialog-body');
+
+            const dialogUsage = document.createElement('h2');
+            dialogUsage.textContent = 'Usage';
+            dialogUsage.classList.add('dialog-usage');
+
+
+            
+            const usage = this.usage;
+            const usageElement = document.createElement('p');
+            usageElement.textContent = usage;
+            usageElement.classList.add('dialog-paragraph-usage');
         
+         
+
         
             const dialog = document.createElement('dialog');
             dialog.classList.add('dialog');
@@ -215,6 +281,7 @@ export class CopyCode extends HTMLElement{
             dialogParagraph.textContent = this.desciption;
             dialogParagraph.classList.add('dialog-paragraph');
             dialogParagraph.style.marginBottom = '1rem';
+            
             
           
             const dialogCloseButton = document.createElement('button');
@@ -229,10 +296,17 @@ export class CopyCode extends HTMLElement{
                     dialog.remove();
                 }, 1000);
             });
+
+            dialogHeaderSection.appendChild(dialoHeader);
+            dialogHeaderSection.appendChild(dialogCloseButton);
+            dialog.appendChild(dialogHeaderSection);
         
-           
-            dialog.appendChild(dialogCloseButton);
-            dialog.appendChild(dialogParagraph);
+            dialogBody.appendChild(dialogParagraph);
+            dialogBody.appendChild(dialogUsage);
+            dialogBody.appendChild(usageElement);
+            dialog.appendChild(dialogBody);
+        
+        
         
            
             this.shadowRoot?.appendChild(dialog);
@@ -277,7 +351,7 @@ export class CopyCode extends HTMLElement{
         } 
         
     static get observedAttributes() {
-        return ['command', 'description'];
+        return ['command', 'description', 'usage'];
     }
     //@ts-ignore
     attributeChangedCallback(name: string, oldValue: string, newValue: string) {
@@ -297,6 +371,15 @@ export class CopyCode extends HTMLElement{
                 
             }
         }
+        if(name === 'usage'){
+
+            this.usage = newValue;
+            const usageElement = this.shadowRoot?.querySelector('.dialog-paragraph-usage');
+            if(usageElement){
+                usageElement.textContent = newValue;
+            }
+        }
+        
     }
 
 

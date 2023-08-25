@@ -1,80 +1,28 @@
-
-interface Commande {
-    command: string;
-    description: string;
-    favorite?: boolean;
+import comands from "./comands.json"
+export interface Commande {
+  command: string;
+  description: string;
+  favorite?: boolean;
+  usage: string;
 }
 export class GitCommands extends HTMLElement {
-    commande:Commande[];
-    currentSearchValue: string;
-    shadow: ShadowRoot | null;
+  commande: Commande[];
+  currentSearchValue: string;
+  shadow: ShadowRoot | null;
 
- constructor() {
+  constructor() {
     super();
-    const shadow = this.attachShadow({ mode: 'open' });
+    const shadow = this.attachShadow({ mode: "open" });
     this.shadow = shadow;
-    this.commande  =[
-        {command:'git init',description:'Initialise un nouveau dépôt Git'},
-    {command:'git clone <url>',description:'Clone un dépôt distant'},
-    {command:'git status',description:'Liste tous les nouveaux fichiers et les fichiers modifiés à commiter'},
-    {command:'git add <fichier>',description:'Ajoute un instantané du fichier, en préparation pour le suivi de version'},
-    {command:'git commit -m "<message>"',description:'Enregistre des instantanés de fichiers de façon permanente dans l\'historique des versions'},
-    {command:'git branch',description:'Liste toutes les branches locales dans le dépôt courant'},
-    {command:'git branch -a',description:'Liste toutes les branches locales et distantes dans le dépôt courant'},
-    {command:'git branch <nom>',description:'Crée une nouvelle branche'},
-    {command:'git branch -d <nom>',description:'Supprime une branche'},
-    {command:'git checkout <nom>',description:'Bascule sur la branche spécifiée et met à jour le répertoire de travail'},
-    {command:'git merge <nom>',description:'Combine l\'historique de la branche spécifiée avec la branche courante'},
-    {command:'git log',description:'Montre l\'historique des versions pour la branche courante'},
-    {command:'git log --follow <fichier>',description:'Montre l\'historique des versions, y compris les actions de renommage, pour le fichier spécifié'},
-    {command:'git diff <branche cible>',description:'Montre les différences de contenu entre deux branches'},
-    {command:'git tag <nom>',description:'Marque le commit spécifié'},
-    {command:'git show <commit>',description:'Montre les objets et les modifications de métadonnées associés au commit spécifié'},
-    {command:'git remote add <nom> <url>',description:'Ajoute un dépôt distant avec le nom spécifié'},
-    {command:'git fetch <nom>',description:'Récupère tout le contenu du dépôt distant spécifié'},
-    {command:'git merge <nom>/<branche>',description:'Fusionne la branche distante dans la branche locale courante'},
-    {command:'git push <nom> <branche>',description:'Envoie tous les commits de la branche locale vers GitHub'},
-    {command:'git pull',description:'Récupère tout le contenu du dépôt distant spécifié'},
-    {command:'git reset --hard <commit>',description:'Supprime tout l\'historique et les modifications effectuées après le commit spécifié'},
-    {command:'git clean -df',description:'Supprime tous les nouveaux fichiers non suivis'},
-    {command:'git config --global user.name <nom>',description:'Définit le nom que vous voulez associer à toutes vos opérations de commit'},
-    {command:'git config --global user.email <adresse>',description:'Définit l\'email que vous voulez associer à toutes vos opérations de commit'},
-    {command:'git config --global alias.<alias-name> <command>',description:'Crée un alias Git'},
-    {command:'git config --global --edit',description:'Ouvre le fichier de configuration dans un éditeur de texte, pour que vous puissiez le modifier manuellement'},
-    {command:'git reset HEAD <fichier>',description:'Annule la préparation du fichier, en retirant le fichier de l\'index, sans modifier son contenu'},
-    {command:'git checkout -- <fichier>',description:'Annule les modifications du fichier'},
-    {command:'git remote -v',description:'Montre les dépôts distants configurés'},
-    {command:'git push --tags',description:'Envoie tous les tags vers GitHub'},
-    {command:'git tag -d <nom>',description:'Supprime le tag local'},
-    {command:'git push <nom> :refs/tags/<tagname>',description:'Supprime le tag distant'},
-    {command:'git reset --hard origin/<nom>',description:'Supprime toutes les modifications locales et récupère la branche spécifiée sur GitHub'},
-    {command:'git reset --hard <commit>',description:'Supprime tout l\'historique et les modifications effectuées après le commit spécifié'},
-    {command:'git clean -df',description:'Supprime tous les nouveaux fichiers non suivis'},
-    {command:'git config --global user.name <nom>',description:'Définit le nom que vous voulez associer à toutes vos opérations de commit'},
-    {command:'git config --global user.email <adresse>',description:'Définit l\'email que vous voulez associer à toutes vos opérations de commit'},
-    {command:'git config --global alias.<alias-name> <command>',description:'Crée un alias Git'},
-    {command:'git config --global --edit',description:'Ouvre le fichier de configuration dans un éditeur de texte, pour que vous puissiez le modifier manuellement'},
-    {command:'git reset HEAD <fichier>',description:'Annule la préparation du fichier, en retirant le fichier de l\'index, sans modifier son contenu'},
-    {command:'git checkout -- <fichier>',description:'Annule les modifications du fichier'},
-    {command:'git remote -v',description:'Montre les dépôts distants configurés'},
-    {command:'git push --tags',description:'Envoie tous les tags vers GitHub'},
-    {command:'git tag -d <nom>',description:'Supprime le tag local'},
-    {command:'git push <nom> :refs/tags/<tagname>',description:'Supprime le tag distant'},  
-    {command:'git reset --hard origin/<nom>',description:'Supprime toutes les modifications locales et récupère la branche spécifiée sur GitHub'},
-    {command:'git reset --hard <commit>',description:'Supprime tout l\'historique et les modifications effectuées après le commit spécifié'},
-    {command:'git clean -df',description:'Supprime tous les nouveaux fichiers non suivis'},
-    {command:'git config --global user.name <nom>',description:'Définit le nom que vous voulez associer à toutes vos opérations de commit'},
-    {command:'git config --global user.email <adresse>',description:'Définit l\'email que vous voulez associer à toutes vos opérations de commit'},
-    {command:'git config --global alias.<alias-name> <command>',description:'Crée un alias Git'},   
+    this.commande = comands;
+    console.log(this.commande);
 
-    ];
+    this.currentSearchValue = "";
 
-    this.currentSearchValue = '';
-   
-        this.createDOMElements();
-        this.attachEventListeners();
-        const style = document.createElement('style');
-        style.textContent = `
+    this.createDOMElements();
+    this.attachEventListeners();
+    const style = document.createElement("style");
+    style.textContent = `
         :host{
             display: block;
             font-family: sans-serif;
@@ -217,247 +165,232 @@ export class GitCommands extends HTMLElement {
    
     `;
     shadow.appendChild(style);
-
-}
-createDOMElements(){
-    const btnSection = document.createElement('section');
-    btnSection.setAttribute('class', 'btn-section');
-    const supTopBtn = document.createElement('sup');
-    supTopBtn.setAttribute('class', 'sup-top-btn');
+  }
+  createDOMElements() {
+   
+    const btnSection = document.createElement("section");
+   
+    btnSection.setAttribute("class", "btn-section");
+    const supTopBtn = document.createElement("sup");
+    supTopBtn.setAttribute("class", "sup-top-btn");
     supTopBtn.textContent = "0";
 
-    const draggableBox = document.createElement('draggable-box');
-    draggableBox.textContent = 'Ajouter une commande au favoris';
-    draggableBox.setAttribute('class', 'draggable-box');
+    const draggableBox = document.createElement("draggable-box");
+    draggableBox.textContent = "Ajouter une commande au favoris";
+    draggableBox.setAttribute("class", "draggable-box");
 
-    const title = document.createElement('h1');
-    title.textContent = 'Git Commands';
-   
-    const box = document.createElement('div');
-    box.setAttribute('class', 'box');
-    const sercheCard = document.createElement('div');
+    const title = document.createElement("h1");
+    title.textContent = "Git Commands";
 
-    const sercheComande = document.createElement('input');
-    sercheComande.setAttribute('type', 'text');
-    sercheComande.setAttribute('placeholder', 'Rechercher une commande');
-    sercheComande.setAttribute('id', 'search');
-    sercheComande.setAttribute('class', 'search');
+    const box = document.createElement("div");
+    box.setAttribute("class", "box");
+    const sercheCard = document.createElement("div");
+
+    const sercheComande = document.createElement("input");
+    sercheComande.setAttribute("type", "text");
+    sercheComande.setAttribute("placeholder", "Rechercher une commande");
+    sercheComande.setAttribute("id", "search");
+    sercheComande.setAttribute("class", "search");
     sercheCard.appendChild(sercheComande);
-    sercheCard.setAttribute('class', 'serche-card');
-    const btnFavorite = document.createElement('button');
-    btnFavorite.setAttribute('class', 'btn-favorite');
-    btnFavorite.textContent = 'Mes favoris';
+    sercheCard.setAttribute("class", "serche-card");
+    const btnFavorite = document.createElement("button");
+    btnFavorite.setAttribute("class", "btn-favorite");
+    btnFavorite.textContent = "Mes favoris";
     btnFavorite.appendChild(supTopBtn);
 
-    const btnAll = document.createElement('button');
-    btnAll.setAttribute('class', 'btn-all');
-    btnAll.textContent = 'Toutes les commandes';
+    const btnAll = document.createElement("button");
+    btnAll.setAttribute("class", "btn-all");
+    btnAll.textContent = "Toutes les commandes";
     btnSection.appendChild(btnFavorite);
     btnSection.appendChild(btnAll);
 
-
-   
     box.appendChild(draggableBox);
     box.appendChild(sercheCard);
     box.appendChild(btnSection);
 
-    const container = document.createElement('div');
-    container.setAttribute('class', 'container');
+    const container = document.createElement("div");
+    container.setAttribute("class", "container");
 
     this.shadow?.appendChild(title);
-    this.shadow?.appendChild(box)
-    this.shadow?.appendChild(container)
-    
-
-
-
-}
-countFavoiteCommande(){
+    this.shadow?.appendChild(box);
+    this.shadow?.appendChild(container);
+  }
+  countFavoiteCommande() {
     let count = 0;
     for (const command of this.commande) {
-        if(command.favorite){
-            count++;
-        }
-        console.log(count);
+      if (command.favorite) {
+        count++;
+      }
     }
     return count;
-}
+  }
 
-attachEventListeners(){
-    const sercheComande = this.shadow?.querySelector('#search');
-    sercheComande?.addEventListener('keyup', () => {
-        //@ts-ignore
-        const newSearchValue = sercheComande.value.toLowerCase() ; 
-        if (newSearchValue !== this.currentSearchValue) {
-            this.currentSearchValue = newSearchValue;
-            const result = this.commande.filter((commande) => {
-                return commande.command.toLowerCase().includes(this.currentSearchValue);
-            });
-            this.render(result);
-        }
+  attachEventListeners() {
+    const sercheComande = this.shadow?.querySelector("#search");
+    sercheComande?.addEventListener("keyup", () => {
+      //@ts-ignore
+      const newSearchValue = sercheComande.value.toLowerCase();
+      if (newSearchValue !== this.currentSearchValue) {
+        this.currentSearchValue = newSearchValue;
+        const result = this.commande.filter((commande) => {
+          return commande.command
+            .toLowerCase()
+            .includes(this.currentSearchValue);
+        });
+        this.render(result);
+      }
     });
 
-    const btnFavorite = this.shadow?.querySelector('.btn-favorite');
-    btnFavorite?.addEventListener('click', () => {
-        this.render(this.commande,true);
+    const btnFavorite = this.shadow?.querySelector(".btn-favorite");
+    btnFavorite?.addEventListener("click", () => {
+      this.render(this.commande, true);
     });
 
-    const btnAll = this.shadow?.querySelector('.btn-all');
-    btnAll?.addEventListener('click', () => {
-        this.render(this.commande,false);
+    const btnAll = this.shadow?.querySelector(".btn-all");
+    btnAll?.addEventListener("click", () => {
+      this.render(this.commande, false);
     });
-
-
-
-}
-connectedCallback() {
+  }
+  connectedCallback() {
     this.adoptedCallback();
     this.render(this.commande);
-    const draggableBox = this.shadowRoot?.querySelector('.draggable-box');
-    // add type for event
+    const draggableBox = this.shadowRoot?.querySelector(".draggable-box");
 
-    draggableBox?.addEventListener('itemdropped', (event:any) => {
-        const data = event.detail;
-        this.setFavoriteCommande(data,true);
-        this.render(this.commande,false);
+    draggableBox?.addEventListener("itemdropped", (event: any) => {
+      const data = event.detail;
+      this.setFavoriteCommande(data, true);
+      this.render(this.commande, false);
     });
-}
+  }
 
-setFavoriteCommande(cmd:Commande,add?:boolean){
-   for (const command of this.commande) {
-        if(command.command === cmd.command){
-            cmd.favorite = add ? true : false;
-            Object.assign(command, cmd);
-        }        
-   }
-}
+  setFavoriteCommande(cmd: Commande, add?: boolean) {
+    for (const command of this.commande) {
+      if (command.command === cmd.command) {
+        cmd.favorite = add ? true : false;
+        Object.assign(command, cmd);
+      }
+    }
+  }
 
-
-
-
-onDragStart(event: DragEvent) {
+  onDragStart(event: DragEvent) {
     const card = event.target as HTMLElement;
-    const command = card.getAttribute('command');
-    const description = card.getAttribute('description');
-    const data = { command, description, favorite:true};
-    event.dataTransfer?.setData('text/plain', JSON.stringify(data));
-}
+    const command = card.getAttribute("command");
+    const description = card.getAttribute("description");
+    const usage = card.getAttribute("usage");
+    const data = { command, description, usage, favorite: true };
+    event.dataTransfer?.setData("text/plain", JSON.stringify(data));
+  }
 
-render(commande:Commande[], favoris?:boolean){
-   const supTopBtn= this.shadowRoot?.querySelector('.sup-top-btn') as HTMLElement;
+
+  render(commande: Commande[], favoris?: boolean) {
+    const supTopBtn = this.shadowRoot?.querySelector(
+      ".sup-top-btn"
+    ) as HTMLElement;
     supTopBtn.textContent = this.countFavoiteCommande().toString();
 
     this.saveToLocalStorage();
-       
-         const container = document.createElement('div');
-        container.setAttribute('class', 'container');
-        
-        container.style.transform = 'scale(0.95)';
-        container.style.opacity = '0';
-        container.style.transition = 'transform 0.3s ease-in-out, opacity 0.3s ease-in-out';
-       
-        if (favoris){
-            commande = commande.filter((commande) => {
-                return commande.favorite;
-            });
-        }else{
-            commande = commande.filter((commande) => {
-                return !commande.favorite;
-            });
-        }
-       
-        commande.forEach((cmd) => {
-            const card = this.createCommandCard(cmd);
-            container.appendChild(card);
-        });
 
-        const existingContainer = this.shadowRoot?.querySelector('.container');
-        if (existingContainer) {
-            existingContainer.remove();
-        }
-        this.shadowRoot?.appendChild(container);
+    const container = document.createElement("div");
+    container.setAttribute("class", "container");
 
-        setTimeout(() => {
-            container.style.transform = 'scale(1)';
-            container.style.opacity = '1';
+    container.style.transform = "scale(0.95)";
+    container.style.opacity = "0";
+    container.style.transition =
+      "transform 0.3s ease-in-out, opacity 0.3s ease-in-out";
 
-          }, 0);
+    if (favoris) {
+      commande = commande.filter((commande) => {
+        return commande.favorite;
+      });
+    } else {
+      commande = commande.filter((commande) => {
+        return !commande.favorite;
+      });
+    }
 
-}
-createCommandCard(commande:Commande){
-    const btnFavoriteSection = document.createElement('section');
-    btnFavoriteSection.setAttribute('class', 'btn-favorite-section');
-
-    const removeFavorite = document.createElement('button');
-    removeFavorite.setAttribute('class', 'remove-favorite');
-    removeFavorite.textContent = 'Supprimer des favoris';
-    removeFavorite.addEventListener('click', () => {
-        this.setFavoriteCommande(commande,false);
-        this.render(this.commande,true);
-    });
-    
-    const btnFavorite = document.createElement('button');
-    
-    btnFavorite.setAttribute('class', 'btn-favorite');
-    btnFavorite.textContent = 'Ajouter au favoris';
-    btnFavorite.addEventListener('click', () => {
-        this.setFavoriteCommande(commande,true);
-        this.render(this.commande,false);
+    commande.forEach((cmd) => {
+      const card = this.createCommandCard(cmd);
+      container.appendChild(card);
     });
 
-    const card = document.createElement('div');
-    card.setAttribute('class', 'card');
-    const code = document.createElement('copy-code');
-    code.style.animation = 'cardEnterAnimation 0.3s ease-in-out';
-    
+    const existingContainer = this.shadowRoot?.querySelector(".container");
+    if (existingContainer) {
+      existingContainer.remove();
+    }
+    this.shadowRoot?.appendChild(container);
+
+    setTimeout(() => {
+      container.style.transform = "scale(1)";
+      container.style.opacity = "1";
+    }, 0);
+  }
+  createCommandCard(commande: Commande) {
+    const btnFavoriteSection = document.createElement("section");
+    btnFavoriteSection.setAttribute("class", "btn-favorite-section");
+
+    const removeFavorite = document.createElement("button");
+    removeFavorite.setAttribute("class", "remove-favorite");
+    removeFavorite.textContent = "Supprimer des favoris";
+    removeFavorite.addEventListener("click", () => {
+      this.setFavoriteCommande(commande, false);
+      this.render(this.commande, true);
+    });
+
+    const btnFavorite = document.createElement("button");
+
+    btnFavorite.setAttribute("class", "btn-favorite");
+    btnFavorite.textContent = "Ajouter au favoris";
+    btnFavorite.addEventListener("click", () => {
+      this.setFavoriteCommande(commande, true);
+      this.render(this.commande, false);
+    });
+
+    const card = document.createElement("div");
+    card.setAttribute("class", "card");
+    const code = document.createElement("copy-code");
+    code.style.animation = "cardEnterAnimation 0.3s ease-in-out";
+
     code.textContent = commande.command;
     code.draggable = true;
-    code.classList.add('draggable');
-    code.addEventListener('dragstart', this.onDragStart.bind(this));
-   
-    code.setAttribute('command', commande.command);
-    code.setAttribute('description', commande.description);
+    code.classList.add("draggable");
+    code.addEventListener("dragstart", this.onDragStart.bind(this));
+
+    code.setAttribute("command", commande.command);
+    code.setAttribute("description", commande.description);
+    code.setAttribute("usage", commande.usage);
+
     card.appendChild(code);
     card.appendChild(btnFavoriteSection);
-    if(commande.favorite){
-        code.draggable = false;
-        code.classList.remove('draggable');
-        btnFavoriteSection.appendChild(removeFavorite);
-    }else{
-        btnFavoriteSection.appendChild(btnFavorite);
+    if (commande.favorite) {
+      code.draggable = false;
+      code.classList.remove("draggable");
+      btnFavoriteSection.appendChild(removeFavorite);
+    } else {
+      btnFavoriteSection.appendChild(btnFavorite);
     }
 
-    
-    
     return card;
-
-}
-highlightSearchMatches(text: string, searchValue: string) {
-    const regex = new RegExp(searchValue, 'gi'); 
+  }
+  highlightSearchMatches(text: string, searchValue: string) {
+    const regex = new RegExp(searchValue, "gi");
     return text.replace(regex, (match) => `<mark>${match}</mark>`);
-}
+  }
 
-saveToLocalStorage(){
-    localStorage.setItem('commande', JSON.stringify(this.commande));
-
-}
-loadFromLocalStorage(){
-
-    const savedCommande = localStorage.getItem('commande');
+  saveToLocalStorage() {
+    localStorage.setItem("commande", JSON.stringify(this.commande));
+  }
+  loadFromLocalStorage() {
+    const savedCommande = localStorage.getItem("commande");
     if (savedCommande) {
-        this.commande = JSON.parse(savedCommande);
+      this.commande = JSON.parse(savedCommande);
     }
-    
-}
-disconnectedCallback() {
+  }
+  disconnectedCallback() {
     this.saveToLocalStorage();
-}
-adoptedCallback() {
+  }
+  adoptedCallback() {
     this.loadFromLocalStorage();
-
+  }
 }
 
-}
-
-
-customElements.define('git-commands', GitCommands);
+customElements.define("git-commands", GitCommands);

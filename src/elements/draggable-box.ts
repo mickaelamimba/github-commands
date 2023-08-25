@@ -1,10 +1,9 @@
-interface DraggableData {
-    command: string;
-    description: string;
-  }
+import { Commande } from "./git-commands";
+
+
 
   export interface DraggableBoxEventMap extends Event {
-    'itemdropped': CustomEvent<DraggableData>;
+    'itemdropped': CustomEvent<Commande>;
   }  
 class DraggableBox extends HTMLElement {
     constructor() {
@@ -39,8 +38,8 @@ class DraggableBox extends HTMLElement {
 
     handleDrop(event: DragEvent) {
         event.preventDefault();
-        const data = JSON.parse(event.dataTransfer!.getData('text/plain')) as DraggableData;
-        const customEvent = new CustomEvent<DraggableData>('itemdropped', {
+        const data = JSON.parse(event.dataTransfer!.getData('text/plain')) as Commande;
+        const customEvent = new CustomEvent<Commande>('itemdropped', {
           bubbles: true,
           detail: data,
         });

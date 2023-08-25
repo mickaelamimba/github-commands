@@ -1,0 +1,200 @@
+[
+    {
+        "command": "git init",
+        "description": "Initialise un nouveau dépôt Git",
+        "usage": "git init <nom_du_dossier>"
+    },
+    {
+      "command": "git clone <url>",
+      "description": "Clone un dépôt distant",
+      "usage": "git clone <url> <nom_du_dossier>"
+    },
+    {
+      "command": "git status",
+      "description": "Affiche les fichiers nouveaux, modifiés et non suivis dans le répertoire de travail",
+      "usage": "git status [-s | --short]"
+    },
+    {
+      "command": "git add <fichier>",
+      "description": "Ajoute un instantané du fichier à l'index, en préparation pour le suivi de version",
+      "usage": "git add <fichier>"
+    },
+    {
+      "command": "git commit -m \"<message>\"",
+      "description": "Enregistre des instantanés de fichiers de façon permanente dans l'historique des versions",
+      "usage": "git commit -am \"<message>\""
+    },
+    {
+      "command": "git branch",
+      "description": "Affiche la liste des branches locales",
+      "usage": "git branch [-a]"
+    },
+    {
+      "command": "git branch -a",
+      "description": "Affiche la liste de toutes les branches locales et distantes",
+      "usage": "git branch -a"
+    },
+    {
+      "command": "git branch <nom>",
+      "description": "Crée une nouvelle branche à partir de la branche actuelle",
+      "usage": "git branch <nom>"
+    },
+    {
+      "command": "git branch -d <nom>",
+      "description": "Supprime une branche (locale uniquement)",
+      "usage": "git branch -d <nom>"
+    },
+    {
+      "command": "git branch -m <nom> <nouveau_nom>",
+      "description": "Renomme une branche",
+      "usage": "git branch -m <nom> <nouveau_nom>"
+    },
+    {
+      "command": "git checkout <nom>",
+      "description":
+        "Bascule sur la branche spécifiée et met à jour le répertoire de travail",
+      "usage": "git checkout -b <nom>"
+    },
+    {
+      "command": "git merge <nom>",
+      "description":
+        "Combine l'historique de la branche spécifiée avec la branche courante",
+      "usage": "git merge <nom> [--no-ff]"
+    },
+    {
+      "command": "git log",
+      "description":
+        "Affiche l'historique des versions pour la branche courante",
+      "usage": "git log [--oneline]"
+    },
+    {
+      "command": "git log --follow <fichier>",
+      "description":
+        "Affiche l'historique des versions, y compris les renommages, pour le fichier spécifié",
+      "usage": "git log --follow <fichier>"
+    },
+    {
+      "command": "git diff <branche cible>",
+      "description": "Affiche les différences de contenu entre deux branches",
+      "usage": "git diff <branche cible> [--cached <fichier>]"
+    },
+    {
+      "command": "git tag <nom>",
+      "description": "Marque le commit courant avec un tag",
+      "usage": "git tag -a <nom> -m \"<message>\""
+    },
+    {
+      "command": "git show <commit>",
+      "description":
+        "Affiche les détails et les modifications associées à un commit",
+      "usage": "git show <commit>"
+    },
+    {
+      "command": "git remote add <nom> <url>",
+      "description": "Ajoute un dépôt distant avec le nom spécifié",
+      "usage": "git remote add <nom> <url>"
+    },
+    {
+      "command": "git fetch <nom>",
+      "description": "Récupère les références du dépôt distant spécifié",
+      "usage": "git fetch <nom> [<branche>] "
+    },
+    {
+      "command": "git merge <nom>/<branche>",
+      "description":
+        "Fusionne la branche distante dans la branche locale courante",
+      "usage": "git merge <nom>/<branche>"
+    },
+    {
+      "command": "git push <nom> <branche>",
+      "description": "Pousse les commits locaux vers la branche distante",
+      "usage": "git push <nom> <branche>"
+    },
+    {
+      "command": "git pull",
+      "description": "Récupère les changements depuis un dépôt distant",
+      "usage": "git pull <nom> <branche>"
+    },
+    {
+      "command": "git reset --hard <commit>",
+      "description":
+        "Réinitialise la branche courante au commit spécifié, en supprimant les modifications locales",
+      "usage": "git reset --hard <commit>"
+    },
+    {
+      "command": "git clean -df",
+      "description": "Supprime les fichiers non suivis du répertoire de travail",
+      "usage": "git clean -df"
+    },
+    {
+      "command": "git config --global user.name <nom>",
+      "description":
+        "Configure le nom associé à vos opérations de commit",
+      "usage": "git config --global user.name <nom>"
+    },
+    {
+      "command": "git config --global user.email <adresse>",
+      "description":
+        "Configure l'adresse email associée à vos opérations de commit",
+      "usage": "git config --global user.email <adresse>"
+    },
+    {
+      "command": "git config --global alias.<alias-name> <commande>",
+      "description": "Crée un alias pour une commande Git",
+      "usage": "git config --global alias.<alias-name> <commande>"
+    },
+    {
+      "command": "git config --global --edit",
+      "description":
+        "Ouvre le fichier de configuration global dans un éditeur de texte",
+      "usage": "git config --global --edit"
+    },
+    {
+      "command": "git reset HEAD <fichier>",
+      "description":
+        "Annule la préparation du fichier, le retirant de l'index, sans modifier son contenu",
+      "usage": "git reset HEAD <fichier>"
+    },
+    {
+      "command": "git checkout -- <fichier>",
+      "description": "Annule les modifications apportées au fichier non enregistré",
+      "usage": "git checkout -- <fichier>"
+    },
+    {
+      "command": "git remote -v",
+      "description": "Affiche les URL des dépôts distants configurés",
+      "usage": "git remote -v"
+    },
+    {
+      "command": "git push --tags",
+      "description": "Pousse tous les tags vers le dépôt distant",
+      "usage": "git push --tags"
+    },
+    {
+      "command": "git tag -d <nom>",
+      "description": "Supprime le tag local spécifié",
+      "usage": "git tag -d <nom>"
+    },
+    {
+      "command": "git push <nom> :refs/tags/<tagname>",
+      "description": "Supprime le tag distant spécifié",
+      "usage": "git push <nom> :refs/tags/<tagname>"
+    },
+    {
+      "command": "git reset --hard origin/<nom>",
+      "description":
+        "Réinitialise la branche locale en supprimant les modifications non enregistrées et en récupérant les modifications distantes",
+      "usage": "git reset --hard origin/<nom>"
+    },
+    {
+      "command": "git reset --hard <commit>",
+      "description":
+        "Réinitialise la branche locale en supprimant les modifications après le commit spécifié",
+      "usage": "git reset --hard <commit>"
+    },
+    {
+      "command": "git clean -df",
+      "description": "Supprime les fichiers non suivis et ignorés du répertoire de travail",
+      "usage": "git clean -df"
+    }
+]
