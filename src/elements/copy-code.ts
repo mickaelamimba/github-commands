@@ -55,12 +55,12 @@ export class CopyCode extends HTMLElement{
         }
         
         attachEventListeners() {
-            //@ts-ignore
-            this.shadow.querySelector('.copy-button').addEventListener('click', () => {
+            
+            this.shadow?.querySelector('.copy-button')!.addEventListener('click', () => {
                 this.copyToClipboard(this.codeText);
             });
-    //@ts-ignore
-            this.shadow.querySelector('.show-description').addEventListener('click', () => {
+    
+            this.shadow?.querySelector('.show-description')!.addEventListener('click', () => {
                 this.dialogBoxDescription();
             });
         }
@@ -353,8 +353,8 @@ export class CopyCode extends HTMLElement{
     static get observedAttributes() {
         return ['command', 'description', 'usage'];
     }
-    //@ts-ignore
-    attributeChangedCallback(name: string, oldValue: string, newValue: string) {
+    
+    attributeChangedCallback(name: string, _oldValue: string, newValue: string) {
         if(name === 'command'){
             this.codeText = newValue;
             const codeElement = this.shadowRoot?.querySelector('pre');

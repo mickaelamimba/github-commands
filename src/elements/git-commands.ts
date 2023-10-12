@@ -1,3 +1,4 @@
+import { createElements } from "../func/createElment";
 import comands from "./comands.json"
 export interface Commande {
   command: string;
@@ -15,7 +16,7 @@ export class GitCommands extends HTMLElement {
     const shadow = this.attachShadow({ mode: "open" });
     this.shadow = shadow;
     this.commande = comands;
-    console.log(this.commande);
+   
 
     this.currentSearchValue = "";
 
@@ -158,6 +159,15 @@ export class GitCommands extends HTMLElement {
         font-weight: bold;
 
     }
+    [draggable="true"]{
+      user-select: none;
+      -moz-user-select: none;
+      -webkit-user-select: none;
+      -ms-user-select: none;
+    }
+    .dragging{
+      opacity:0.25
+    }
 
    
 
@@ -167,32 +177,22 @@ export class GitCommands extends HTMLElement {
     shadow.appendChild(style);
   }
   createDOMElements() {
-   
-    const btnSection = document.createElement("section");
-   
-    btnSection.setAttribute("class", "btn-section");
-    const supTopBtn = document.createElement("sup");
-    supTopBtn.setAttribute("class", "sup-top-btn");
-    supTopBtn.textContent = "0";
 
-    const draggableBox = document.createElement("draggable-box");
-    draggableBox.textContent = "Ajouter une commande au favoris";
-    draggableBox.setAttribute("class", "draggable-box");
-
-    const title = document.createElement("h1");
-    title.textContent = "Git Commands";
-
-    const box = document.createElement("div");
-    box.setAttribute("class", "box");
-    const sercheCard = document.createElement("div");
-
-    const sercheComande = document.createElement("input");
-    sercheComande.setAttribute("type", "text");
-    sercheComande.setAttribute("placeholder", "Rechercher une commande");
-    sercheComande.setAttribute("id", "search");
-    sercheComande.setAttribute("class", "search");
+    const btnSection = createElements({tagName:'section', classList:['btn-section']})
+    const supTopBtn = createElements({tagName:'sup', classList:['sup-top-btn'],textContent:'0'}) 
+    const draggableBox = createElements({tagName:'draggable-box',textContent:'Ajouter une commande au favoris',classList:['draggable-box']});
+    const title = createElements({tagName:'h1' ,textContent:'Git Commands'})
+    const box = createElements({tagName:'div', classList:['box']})
+    const sercheCard = createElements({tagName:'div', classList:['serche-card']})
+    const sercheComande = createElements({tagName:'input',attributes:[
+      {name:'type',value:'text'},
+      {name:'placeholder',value:'Rechercher une commande'},
+      {name:'id',value:'search'}
+    ]
+    ,classList:['search']
+  }) 
+      
     sercheCard.appendChild(sercheComande);
-    sercheCard.setAttribute("class", "serche-card");
     const btnFavorite = document.createElement("button");
     btnFavorite.setAttribute("class", "btn-favorite");
     btnFavorite.textContent = "Mes favoris";
@@ -274,6 +274,7 @@ export class GitCommands extends HTMLElement {
 
   onDragStart(event: DragEvent) {
     const card = event.target as HTMLElement;
+    
     const command = card.getAttribute("command");
     const description = card.getAttribute("description");
     const usage = card.getAttribute("usage");
@@ -325,48 +326,60 @@ export class GitCommands extends HTMLElement {
     }, 0);
   }
   createCommandCard(commande: Commande) {
-    const btnFavoriteSection = document.createElement("section");
-    btnFavoriteSection.setAttribute("class", "btn-favorite-section");
+    const btnFavoriteSection = createElements({ tagName: 'section', classList: ['btn-favorite-section'] });
 
-    const removeFavorite = document.createElement("button");
-    removeFavorite.setAttribute("class", "remove-favorite");
-    removeFavorite.textContent = "Supprimer des favoris";
-    removeFavorite.addEventListener("click", () => {
-      this.setFavoriteCommande(commande, false);
-      this.render(this.commande, true);
-    });
 
-    const btnFavorite = document.createElement("button");
 
-    btnFavorite.setAttribute("class", "btn-favorite");
-    btnFavorite.textContent = "Ajouter au favoris";
-    btnFavorite.addEventListener("click", () => {
-      this.setFavoriteCommande(commande, true);
-      this.render(this.commande, false);
-    });
+    const removeFavorite = createElements({
+      tagName: 'c-button', attributes: [
+        { name: 'text', value: 'Supprimer des favoris' },
+        { name: 'color', value: '#e74c3c' }
 
-    const card = document.createElement("div");
-    card.setAttribute("class", "card");
-    const code = document.createElement("copy-code");
-    code.style.animation = "cardEnterAnimation 0.3s ease-in-out";
 
-    code.textContent = commande.command;
+      ],
+      onClick: () => {
+        this.setFavoriteCommande(commande, false);
+        this.render(this.commande, true);
+      }
+    })
+    const btnFavorite = createElements({
+      tagName: 'c-button', attributes: [
+        { name: 'text', value: 'Ajouter au favoris' },
+        { name: 'color', value: '#f1c40f' }
+
+      ],
+      onClick: () => {
+        this.setFavoriteCommande(commande, true);
+        this.render(this.commande, false);
+      }
+    })
+
+    const card = createElements({ tagName: 'div', classList: ['card','draggable'] });
+
+    const code = createElements({
+      tagName: 'copy-code', attributes: [
+        { name: 'command', value: commande.command },
+        { name: 'description', value: commande.description },
+        { name: 'usage', value: commande.usage },
+      ],
+      style: { animation: 'cardEnterAnimation 0.3s ease-in-out' },
+      textContent: commande.command,
+      classList: ['draggable']
+    }
+    );
     code.draggable = true;
-    code.classList.add("draggable");
     code.addEventListener("dragstart", this.onDragStart.bind(this));
-
-    code.setAttribute("command", commande.command);
-    code.setAttribute("description", commande.description);
-    code.setAttribute("usage", commande.usage);
-
     card.appendChild(code);
     card.appendChild(btnFavoriteSection);
     if (commande.favorite) {
       code.draggable = false;
       code.classList.remove("draggable");
+      card.classList.remove('draggable')
       btnFavoriteSection.appendChild(removeFavorite);
+      btnFavorite.remove()
     } else {
       btnFavoriteSection.appendChild(btnFavorite);
+      removeFavorite.remove()
     }
 
     return card;

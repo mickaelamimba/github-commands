@@ -1,5 +1,5 @@
 import './style.css'
-
+import './elements/ui/button.ts'
 import './elements/copy-code.ts'
 import './elements/git-commands.ts'
 import './elements/draggable-box.ts'
